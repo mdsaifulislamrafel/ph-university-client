@@ -1,15 +1,20 @@
-const routerGenerator = () => {
-  export const adminRoutes = adminPaths.reduce((acc: TRoute[], item) => {
+import { TRoute, TUserPath } from "../Types";
+
+
+
+
+export const routerGenerator = (items : TUserPath[]) => {
+   const routes = items.reduce((acc: TRoute[], item) => {
     if (item.path && item.element) {
       acc.push({
         path: item.path,
         element: item.element,
       });
     }
-    if (item.Children) {
-      item.Children.forEach((child) => {
+    if (item.children) {
+      item.children.forEach((child) => {
         acc.push({
-          path: child.path,
+          path: child.path!,
           element: child.element,
         });
       });
@@ -17,4 +22,5 @@ const routerGenerator = () => {
 
     return acc;
   }, []);
+  return routes;
 };
