@@ -7,6 +7,7 @@ import { setUser, TUser } from "../redux/features/auth/authSlice";
 import { verifyToken } from "../utils/verifyToken";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import PhFrom from "../components/from/PhFrom";
 
 const Login = () => {
   const disPatch = useDispatch();
@@ -20,25 +21,26 @@ const Login = () => {
   const [login] = useLoginMutation();
 
   const onSubmit = async (data: FieldValues) => {
-    const tostId = toast.loading("logging in");
+    console.log(data);
+    // const tostId = toast.loading("logging in");
 
-    try {
-      const userInfo = {
-        id: data.userId,
-        password: data.password,
-      };
-      const res = await login(userInfo).unwrap();
-      const user = verifyToken(res.data.accessToken) as TUser;
-      disPatch(setUser({ user: user, token: res.data.accessToken }));
-      toast.success("Logged in successfully", { id: tostId, duration: 1000 });
-      navigate(`/${user.role}/dashboard`);
-    } catch (err) {
-      toast.error("Invalid ID or password", { id: tostId, duration: 1000 });
-    }
+    // try {
+    //   const userInfo = {
+    //     id: data.userId,
+    //     password: data.password,
+    //   };
+    //   const res = await login(userInfo).unwrap();
+    //   const user = verifyToken(res.data.accessToken) as TUser;
+    //   disPatch(setUser({ user: user, token: res.data.accessToken }));
+    //   toast.success("Logged in successfully", { id: tostId, duration: 1000 });
+    //   navigate(`/${user.role}/dashboard`);
+    // } catch (err) {
+    //   toast.error("Invalid ID or password", { id: tostId, duration: 1000 });
+    // }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <PhFrom onSubmit={onSubmit}>
       <div>
         <label htmlFor="id">ID: </label>
         <input type="text" id="id" {...register("userId")} />
@@ -48,7 +50,7 @@ const Login = () => {
         <input type="text" id="password" {...register("password")} />
       </div>
       <Button htmlType="submit">Login</Button>
-    </form>
+    </PhFrom>
   );
 };
 
